@@ -22,15 +22,9 @@ class Statistics:
             lambda player: player.team == team_name,
             self._players
         )
+        print(players_of_team)
 
         return list(players_of_team)
-
-    def top_scorers(self, how_many):
-        sorted_players = sorted(
-            self._players,
-            reverse=True,
-            key=sort_by_points
-        )
 
     def top_scorers(self, how_many):
         sorted_players = sorted(

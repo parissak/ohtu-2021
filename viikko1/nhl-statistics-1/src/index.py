@@ -16,7 +16,7 @@ def main():
     print("Top scorers:")
     for player in top_scorers:
         print(player)
-
+ 
 
 if __name__ == "__main__":
     main()
