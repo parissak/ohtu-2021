@@ -22,7 +22,6 @@ class Statistics:
             lambda player: player.team == team_name,
             self._players
         )
-        print(players_of_team)
 
         return list(players_of_team)
 

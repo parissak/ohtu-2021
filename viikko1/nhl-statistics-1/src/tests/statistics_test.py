@@ -2,14 +2,6 @@ import unittest
 from statistics import Statistics
 from player import Player
 
-import sys
-import logging
-
-logger = logging.getLogger()
-logger.level = logging.DEBUG
-strea_handler = logging.StreamHandler(sys.stdout)
-logger.addHandler(strea_handler)
-
 class PlayerReaderStub:
     def get_players(self):
         return [
