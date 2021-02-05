@@ -1,11 +1,16 @@
-SCORE_RESULT = 4
-
 class TennisGame:
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
         self.player2_name = player2_name
         self.player1_score = 0
         self.player2_score = 0
+
+        self.numbers = {
+            0: "Love",
+            1: "Fifteen",
+            2: "Thirty",
+            3: "Forty"
+        }
 
     def won_point(self, player_name):
         if player_name == "player1":
@@ -17,51 +22,25 @@ class TennisGame:
         if self.player1_score == self.player2_score:
             return self.draw() 
 
-        if self.player1_score >= SCORE_RESULT or self.player2_score >= SCORE_RESULT:
+        if self.player1_score >= 4 or self.player2_score >= 4:
             return self.advantage_or_win()
  
-        return self.form_result()    
+        return self.not_decisive()    
     
     def draw(self):
-        if self.player1_score == 0:
-            score = "Love-All"
-        elif self.player1_score == 1:
-            score = "Fifteen-All"
-        elif self.player1_score == 2:
-            score = "Thirty-All"
-        elif self.player1_score == 3:
-            score = "Forty-All"
+        if self.player1_score < 4:
+            return f"{self.numbers[self.player1_score]}-All"
         else:
-            score = "Deuce" 
-        return score    
+            return "Deuce"   
 
     def advantage_or_win(self):
         difference = self.player1_score - self. player2_score
+        player = "player1" if difference > 0 else "player2" 
 
-        if difference == 1:
-            score = "Advantage player1"
-        elif difference == -1:
-            score = "Advantage player2"
-        elif difference >= 2:
-            score = "Win for player1"
-        else:
-            score = "Win for player2"
-        return score
+        if abs(difference) == 1:
+            return f"Advantage {player}"
+
+        return f"Win for {player}"
     
-    def form_result(self):
-        score = ""
-        score += self.formulate(self.player1_score) 
-        score += "-"
-        score += self.formulate(self.player2_score)  
-        return score
-
-    def formulate(self, score):
-        if score == 0:
-            score = "Love"
-        elif score == 1:
-            score = "Fifteen"
-        elif score == 2:
-            score = "Thirty"
-        elif score == 3:
-            score = "Forty" 
-        return score  
+    def not_decisive(self):
+        return self.numbers[self.player1_score] + "-" + self.numbers[self.player2_score]

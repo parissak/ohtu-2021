@@ -3,21 +3,15 @@ OLETUSKASVATUS = 5
 
 
 class IntJoukko:
-    def __init__(self, kapasiteetti=None, kasvatuskoko=None):
-        if kapasiteetti is None:
-            self.lukujoukko = list([0] * KAPASITEETTI)
-        elif not isinstance(kapasiteetti, int) or kapasiteetti < 0:
+    def __init__(self, kapasiteetti=KAPASITEETTI, kasvatuskoko=OLETUSKASVATUS):
+        if not isinstance(kapasiteetti, int) or kapasiteetti < 0:
             raise Exception("Kapasiteetti ei voi olla < 0 tai muu kuin kokonaisluku")
-        else:
-            self.lukujoukko = list([0] * kapasiteetti)
 
-        if kasvatuskoko is None:
-            self.kasvatuskoko = OLETUSKASVATUS
-        elif not isinstance(kasvatuskoko, int) or kasvatuskoko < 0:
+        if not isinstance(kasvatuskoko, int) or kasvatuskoko < 0:
             raise Exception("Kasvatuskoko ei voi olla < 0 tai muu kuin kokonaisluku")
-        else:
-            self.kasvatuskoko = kasvatuskoko
 
+        self.lukujoukko = list([0] * kapasiteetti)
+        self.kasvatuskoko = kasvatuskoko
         self.alkioiden_lkm = 0
 
     def kuuluu(self, haettava_luku):
@@ -40,13 +34,10 @@ class IntJoukko:
     def poista(self, poistettava_luku):
         for i in range(0, self.alkioiden_lkm):
             if poistettava_luku == self.lukujoukko[i]:
-                self.lukujoukko[i] = 0
-
                 for j in range(i, self.alkioiden_lkm - 1):
                     apu = self.lukujoukko[j]
                     self.lukujoukko[j] = self.lukujoukko[j + 1]
-                    self.lukujoukko[j + 1] = apu
-                
+                    self.lukujoukko[j + 1] = apu 
                 self.alkioiden_lkm = self.alkioiden_lkm - 1
                 return True
         return False
