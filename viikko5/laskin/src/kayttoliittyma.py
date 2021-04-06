@@ -12,19 +12,29 @@ class Summa:
     def __init__(self, sovellus, syote):
         self.sovellus = sovellus
         self.syote = syote
+        self.edellinen_arvo = 0
 
     def suorita(self):
+        self.edellinen_arvo = self.sovellus.tulos
         arvo = int(self.syote())
         self.sovellus.plus(arvo)
+    
+    def kumoa(self):
+        self.sovellus.aseta_arvo(self.edellinen_arvo)
 
 class Erotus:
     def __init__(self, sovellus, syote):
         self.sovellus = sovellus
         self.syote = syote
+        self.edellinen_arvo = 0
 
     def suorita(self):
+        self.edellinen_arvo = self.sovellus.tulos
         arvo = int(self.syote())
         self.sovellus.miinus(arvo)
+
+    def kumoa(self):
+        self.sovellus.aseta_arvo(self.edellinen_arvo)
 
 class Nollaus:
     def __init__(self, sovellus, syote):
@@ -33,25 +43,30 @@ class Nollaus:
 
     def suorita(self):
         self.sovellus.nollaa()
-
+    
 class Kumoa:
     def __init__(self, sovellus, syote):
         self.sovellus = sovellus
         self.syote = syote
 
     def suorita(self):
-        pass
-
+        edellinen_olio = self.syote()
+        try:
+            edellinen_olio.kumoa()
+        except Exception:
+            pass
+        
 class Kayttoliittyma:
     def __init__(self, sovellus, root):
         self._sovellus = sovellus
         self._root = root
+        self._edellinen_olio = None
 
         self._komennot = {
             Komento.SUMMA: Summa(sovellus, self._lue_syote),
             Komento.EROTUS: Erotus(sovellus, self._lue_syote),
             Komento.NOLLAUS: Nollaus(sovellus, self._lue_syote),
-            Komento.KUMOA: Kumoa(sovellus, self._lue_syote)
+            Komento.KUMOA: Kumoa(sovellus, self._palauta_edellinen_olio)
         }
 
     def kaynnista(self):
@@ -101,10 +116,14 @@ class Kayttoliittyma:
         except:
             pass
         return arvo
+    
+    def _palauta_edellinen_olio(self):
+        return self._edellinen_olio
 
     def _suorita_komento(self, komento):
         komento_olio = self._komennot[komento]
         komento_olio.suorita()
+        self._edellinen_olio = komento_olio
 
         self._kumoa_painike["state"] = constants.NORMAL
 
