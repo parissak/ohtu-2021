@@ -15,12 +15,23 @@ class And:
         
         return True
 
+class Or:
+    def __init__(self, *matchers):
+        self._matchers = matchers
+    
+    def matches(self, player):
+        for matcher in self._matchers:
+            if matcher.matches(player):              
+                return True
+        
+        return False
+
 class Not:
-    def __init__(self, class_object):
-        self._class_object = class_object
+    def __init__(self, matcher):
+        self._matcher = matcher
 
     def matches(self, player):
-        value = self._class_object.matches(player)
+        value = self._matcher.matches(player)
         return not value
 
 class PlaysIn:
