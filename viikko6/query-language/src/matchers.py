@@ -1,7 +1,7 @@
 from pprint import pprint
 
 class All:
-    def matches(player):
+    def matches(self, player):
         return True
 
 class And:
