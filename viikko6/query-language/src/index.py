@@ -1,7 +1,6 @@
 from pprint import pprint
 from statistics import Statistics
 from player_reader import PlayerReader
-from matchers import All, And, HasAtLeast, HasFewerThan, Not, Or, PlaysIn
 from querybuilder import QueryBuilder
 
 def main():
@@ -10,13 +9,12 @@ def main():
     stats = Statistics(reader)
 
     query = QueryBuilder()
-    matcher = (
-        query
-            .playsIn("NYR")
-            .hasAtLeast(5,"goals")
-            .HasFewerThan(10, "goals")
-            .build()
-    )
+
+    m1 = query.playsIn("PHI").hasAtLeast(5,"assists").hasFewerThan(5, "goals").build()
+    m2 = query.playsIn("EDM").hasAtLeast(40,"points").build()
+    m3 = query.playsIn("VGK").build()
+
+    matcher = query.oneOf(m1, m2, m3).build()
 
     for player in stats.matches(matcher):
         print(player)
